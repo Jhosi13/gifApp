@@ -146,10 +146,7 @@ const Formulario = () => {
          }catch(error){
              console.log(error)
          }
-        
-         
-        }
-    } 
+    }
 
     const eliminar = async id =>{
         try{
@@ -175,8 +172,10 @@ const Formulario = () => {
     }
 
   return (
-        <div className='container mt-5'>
-        
+    <div className='container mt-5'>
+        <h1 className='text-center'> </h1>
+
+        <hr/>
         <div className='row'>
             <div className='col-8'>
                 <h4 className='text-center'>Editar información</h4>
@@ -248,7 +247,7 @@ const Formulario = () => {
                             <button 
                             className='btn btn-primary btn-block'
                             type='submit'
-                            >Registrarse!</button>
+                            >Agregar</button>
                             
                             
                         }
@@ -256,7 +255,7 @@ const Formulario = () => {
             </div>
         </div>
     </div>
-  )
+  )   
 }
 
 export default Formulario
