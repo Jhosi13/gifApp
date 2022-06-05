@@ -25,7 +25,7 @@ body {
   text-align: center;
 }
 
-input {
+input, button {
   color: black;
   font-size: 1.2rem;
   width: 100%;

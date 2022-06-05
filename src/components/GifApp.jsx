@@ -4,7 +4,7 @@ import AgregarBusqueda from './AgregarBusqueda';
 import GifContenedor from './GifContenedor';
 import Formulario from './Formulario';
 
-const GifApp = ({ categorias = ['simpson'] }) => {
+const GifApp = ({ categorias = ['Basketball'] }) => {
   const [categoriasBusqueda, setCategoriasBusqueda] = useState(categorias);
   return (
     <>

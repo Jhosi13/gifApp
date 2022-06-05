@@ -1,12 +1,11 @@
 import React  from 'react'
 import {nanoid} from 'nanoid'
-import firebase from "firebase/app";
+import {firebase} from '../firebase';
 
 const Formulario = () => {
     const [usuario, setUsuario] = React.useState('')
     const [correo, setCorreo] = React.useState('')
     const [contra, setContra] = React.useState('')
-    const [buscargif, setBuscargif] = React.useState('')
 
     const [listaPersonas, setListaPersonas] = React.useState([])
     
@@ -53,18 +52,12 @@ const Formulario = () => {
           setError('Escriba su contraseña')
           return
         }
-        if(!buscargif.trim()){
-          setError('Escriba su gif favorito')
-          return
-        }
         try{
             const db = firebase.firestore()
             const nuevaPersona = {
                 Usuario: usuario,
                 Correo: correo,
-                Contra: contra,
-                Buscar: buscargif,
-
+                Contra: contra
             }
 
             await db.collection('usuarios').add(nuevaPersona)
@@ -73,15 +66,14 @@ const Formulario = () => {
                 ...listaPersonas,
                 {id:nanoid(), Usuario: usuario,
                     Correo: correo,
-                    Contra: contra,
-                    Buscar: buscargif }
+                    Contra: contra}
             ])
 
             e.target.reset()
             setUsuario('')
             setCorreo('')
             setContra('')
-            setBuscargif('')
+            
             setError(null)
         }catch(error){
             console.log(error)
@@ -93,7 +85,7 @@ const Formulario = () => {
         setUsuario(item.Usuario)
         setCorreo(item.Correo)
         setContra(item.Contra)
-        setBuscargif(item.buscargif)
+        
         setModoEdicion(true)
         setId(item.id)
     }
@@ -114,31 +106,25 @@ const Formulario = () => {
            setError('Escriba su contraseña')
            return
          }
-         if(!buscargif.trim()){
-           setError('Digite su edad')
-           return
-         }
+         
          try{
              const db = firebase.firestore()
              await db.collection('usuarios').doc(id).update({
                 Usuario: usuario,
                 Correo: correo,
-                Contra: contra,
-                Buscar: buscargif
+                Contra: contra
              })
         
              const arrayEditado = listaPersonas.map(
                 item => item.id ===id ? {id:id, Usuario: usuario,
                     Correo: correo,
-                    Contra: contra,
-                    Buscar: buscargif}: item
+                    Contra: contra}: item
             )
     
             setListaPersonas(arrayEditado)
             setUsuario('')
             setCorreo('')
             setContra('')
-            setBuscargif('')
             setId('')
             setModoEdicion(false)
             setError(null)
@@ -167,7 +153,6 @@ const Formulario = () => {
         setId('')
         setCorreo('')
         setContra('')
-        setBuscargif('')
         setError(null)
     }
 
@@ -178,13 +163,13 @@ const Formulario = () => {
         <hr/>
         <div className='row'>
             <div className='col-8'>
-                <h4 className='text-center'>Editar información</h4>
+                
                 <ul className='list-group'>
                     {
                         listaPersonas.map(item=>(
                             <li className='list-group-item' key={item.id}>
                                 <span className='lead'>{item.Usuario}-{item.Correo}-
-                                {item.Contra}-{item.Buscar}</span>
+                                {item.Contra}</span>
                                 <button className='btn btn-danger btn-sm float-end mx-2' onClick={()=> eliminar(item.id)}>
                                 Eliminar
                                 </button>
@@ -197,11 +182,6 @@ const Formulario = () => {
                 </ul>
             </div>
             <div className='col-4'>
-                <h4 className='text-center'>
-                    {
-                        modoEdicion ? 'Editar información' : 'Agregar Información Personal'
-                    }
-                    </h4>
                 <form onSubmit ={modoEdicion ? editarPersonas: guardarInfo}>
                     {
                         error ? <span className='text-danger'>{error}</span> : null
@@ -242,12 +222,10 @@ const Formulario = () => {
                             </>
                         )
                         :
-                        
-
                             <button 
                             className='btn btn-primary btn-block'
-                            type='submit'
-                            >Agregar</button>
+                            
+                            >Registrarse!</button>
                             
                             
                         }
