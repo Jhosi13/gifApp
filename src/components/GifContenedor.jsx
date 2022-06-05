@@ -1,32 +1,26 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useGetGifs } from '../hooks/useGetGifs'
+import GifItem from './GifItem.jsx';
 
 const GifContenedor = ({valorBusqueda}) => {
-  const [listaGifs, setListasGifs] = useState([])
-  
-  const obtenerGifs = async(valorBusqueda)=>{
-    const url = 'https://api.giphy.com/v1/gifs/search?api_key=pYoqpLq4uejVNc1pTJmSSgHC8s8QgRFH&q=simpsons&limit=5'
-    const resp = await fetch(url);
-    const {data} = await resp.json();
-    return data;
-  }
 
-  const traerGifs = ()=>{
-    setListasGifs(obtenerGifs);
-  }
+  const {gifs, cargando} = useGetGifs(valorBusqueda);
   return (
+
     <>
-      <h3> Busqueda {valorBusqueda}</h3>
-      <button onClick={traerGifs()}>Traer gifts</button>
-      <div>
-        <ul>
-        {
-          listaGifs.map(img => (
-            <li>img.id</li>
-          ))
-        }
-        </ul>
-        
-      </div>
+        <h3>{valorBusqueda}</h3>
+        {cargando && <p className='animate__animated animate__flash'>Cargando</p>}
+
+        <div className='card-grid animate__animated animate__bounceInUp'>
+            {
+                gifs.map((gif) =>( 
+                    <GifItem
+                     key = {gif.id}
+                     {... gif}/>
+
+                ))
+            }
+        </div>
     </>
   )
 }
